@@ -15,10 +15,8 @@ bot.onText(/\/start/, async (msg) => {
   );
   await bot.sendMessage(
     chatId,
-    "You can control me by sending these commands:"
+    "You can control me by sending these commands:\n/randomquote - random anime quote\n/randomimage - random image from anime"
   );
-  await bot.sendMessage(chatId, "/randomquote - random anime quote");
-  await bot.sendMessage(chatId, "/randomimage - random image from anime");
 });
 
 bot.onText(/\/randomquote/, async (msg) => {
@@ -28,9 +26,10 @@ bot.onText(/\/randomquote/, async (msg) => {
     url: "https://animechan.vercel.app/api/random",
   });
 
-  await bot.sendMessage(chatId, "Anime: " + anime);
-  await bot.sendMessage(chatId, "Character: " + character);
-  await bot.sendMessage(chatId, "Quote: " + quote);
+  await bot.sendMessage(
+    chatId,
+    `Anime: ${anime}\n\nCharacter: ${character}\n\nQuote: ${quote}`
+  );
 });
 
 bot.onText(/\/randomimage/, async (msg) => {
