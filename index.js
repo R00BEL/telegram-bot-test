@@ -4,15 +4,6 @@ require("dotenv").config();
 const token = process.env.TELEGRAM_BOT_TOKEN;
 const bot = new TelegramBot(token, { polling: true });
 
-bot.onText(/\/echo (.+)/, async (msg, match) => {
-  const chatId = msg.chat.id;
-  const resp = match[1];
-
-  await bot.sendMessage(chatId, resp);
-});
-
-bot.on("message", async (msg) => {
-  const chatId = msg.chat.id;
-
-  await bot.sendMessage(chatId, "Received your message");
+bot.onText(/\/start/, async (msg) => {
+  await bot.sendMessage(msg.from.id, "Hi! I'm bot. Can I help you?");
 });
