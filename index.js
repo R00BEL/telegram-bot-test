@@ -18,19 +18,37 @@ bot.onText(/\/start/, async (msg) => {
     "You can control me by sending these commands:"
   );
   await bot.sendMessage(chatId, "/randomquote - random anime quote");
+  await bot.sendMessage(chatId, "/randomimage - random image from anime");
 });
 
 bot.onText(/\/randomquote/, async (msg) => {
   const chatId = msg.from.id;
-
-  const tempMessage = await bot.sendMessage(chatId, "Give me a moment...");
-
-  const res = await axios.get("https://animechan.vercel.app/api/random");
-  const { anime, character, quote } = res.data;
-
-  await bot.deleteMessage(chatId, tempMessage.message_id);
+  const { anime, character, quote } = await getDataFromApi({
+    chatId,
+    url: "https://animechan.vercel.app/api/random",
+  });
 
   await bot.sendMessage(chatId, "Anime: " + anime);
   await bot.sendMessage(chatId, "Character: " + character);
   await bot.sendMessage(chatId, "Quote: " + quote);
 });
+
+bot.onText(/\/randomimage/, async (msg) => {
+  const chatId = msg.from.id;
+  const {
+    results: [{ url }],
+  } = await getDataFromApi({
+    chatId,
+    url: "https://nekos.best/api/v2/neko",
+  });
+
+  await bot.sendPhoto(chatId, url);
+});
+
+const getDataFromApi = async ({ chatId, url }) => {
+  const tempMessage = await bot.sendMessage(chatId, "Give me a moment...");
+  const res = await axios.get(url);
+  await bot.deleteMessage(chatId, tempMessage.message_id);
+
+  return res.data;
+};
