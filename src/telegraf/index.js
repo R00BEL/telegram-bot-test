@@ -1,8 +1,13 @@
-const { Telegraf } = require("telegraf");
-const axios = require("axios");
-require("dotenv").config();
+import { Scenes, Telegraf } from "telegraf";
+import axios from "axios";
+import scenarioTypeScene from "./controler/start/index.js";
+import * as dotenv from "dotenv";
+
+dotenv.config();
 
 const bot = new Telegraf(process.env.TELEGRAM_BOT_TOKEN);
+const stage = new Scenes.Stage([scenarioTypeScene]);
+bot.use(stage.middleware());
 
 bot.start(async (ctx) => {
   await ctx.reply("Hi! I'm bot. Can I help you?");
@@ -44,6 +49,7 @@ const getDataFromApi = async ({ ctx, url }) => {
   return res.data;
 };
 
+bot.hears("hi", (ctx) => ctx.stage.enter("CONTACT_DATA_WIZARD_SCENE_ID"));
 bot.launch();
 
 process.once("SIGINT", () => bot.stop("SIGINT"));
