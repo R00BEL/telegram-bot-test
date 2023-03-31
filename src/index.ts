@@ -1,4 +1,4 @@
-import { Telegraf, Context } from 'telegraf';
+import { Telegraf, Context, Markup } from 'telegraf';
 import axios from 'axios';
 import { config } from './config.js';
 
@@ -10,7 +10,11 @@ bot.start(async (ctx) => {
     'https://avatars.mds.yandex.net/get-marketpic/8526285/picdfa0abde605bee8112630a9fe241bb5b/600x800',
   );
   await ctx.reply(
-    'You can control me by sending these commands:\n/randomquote - random anime quote\n/randomimage - random image from anime',
+    'You can control me by sending these button:',
+    Markup.inlineKeyboard([
+      Markup.button.callback('Get random quote', '/randomquote'),
+      Markup.button.callback('Get random image', '/randomimage'),
+    ]),
   );
 });
 
