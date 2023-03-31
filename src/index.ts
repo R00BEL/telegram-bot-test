@@ -12,13 +12,13 @@ bot.start(async (ctx) => {
   await ctx.reply(
     'You can control me by sending these button:',
     Markup.inlineKeyboard([
-      Markup.button.callback('Get random quote', '/randomquote'),
-      Markup.button.callback('Get random image', '/randomimage'),
+      Markup.button.callback('Get random quote', 'randomquote'),
+      Markup.button.callback('Get random image', 'randomimage'),
     ]),
   );
 });
 
-bot.command('randomquote', async (ctx) => {
+bot.action('randomquote', async (ctx) => {
   const { anime, character, quote } = await getDataFromApi({
     ctx,
     url: 'https://animechan.vercel.app/api/random',
@@ -27,7 +27,7 @@ bot.command('randomquote', async (ctx) => {
   await ctx.sendMessage(`Anime: ${anime}\n\nCharacter: ${character}\n\nQuote: ${quote}`);
 });
 
-bot.command('randomimage', async (ctx) => {
+bot.action('randomimage', async (ctx) => {
   const {
     results: [{ url }],
   } = await getDataFromApi({
